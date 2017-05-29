@@ -1,0 +1,53 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,98,64)
+  Icon = Picture["icono-email.png"]
+  { Frame1 Frame
+    MoveScaled(45,43,52,19)
+    Arrangement = Arrange.Vertical
+    Text = ("MENSAJE")
+    { TextAreaMensaje TextArea
+      MoveScaled(-1,2,33,10)
+      Wrap = True
+    }
+    { ButtonEnviar Button
+      MoveScaled(25,13,14,5)
+      Text = ("Enviar")
+      Picture = Picture["icono-email30x30.png"]
+    }
+  }
+  { Frame2 Frame
+    MoveScaled(53,4,44,39)
+    Arrangement = Arrange.Fill
+    Text = ("Enviar a.") & "..."
+    { ListBoxContactosEnvio ListBox
+      MoveScaled(3,5,25,24)
+    }
+  }
+  { ButtonAgregar Button
+    MoveScaled(44,16,7,5)
+    Picture = Picture["der.png"]
+  }
+  { ButtonQuitar Button
+    MoveScaled(44,25,7,5)
+    Picture = Picture["izq.png"]
+  }
+  { Frame3 Frame
+    MoveScaled(3,5,39,57)
+    Arrangement = Arrange.Fill
+    Text = ("Lista de Contactos")
+    { GridViewContactos GridView
+      MoveScaled(2,8,27,42)
+      Mode = Select.Multiple
+    }
+  }
+  { TextLabel1 TextLabel
+    MoveScaled(4,0,61,5)
+    Text = ("Realizado por Julio Sanchez Berro (jsbsan). SofwtareLibre.  Vesión:")
+    Alignment = Align.Right
+  }
+  { Labelversion Label
+    MoveScaled(67,0,5,5)
+  }
+}

@@ -1,0 +1,27 @@
+# Gambas Project File 3.0
+# Compiled with Gambas 3.9.2
+Title=TelegramCartero
+Startup=FMain
+Icon=icono-email.png
+Version=0.0.3
+Component=gb.image
+Component=gb.qt4
+Component=gb.form
+Component=gb.settings
+Component=gb.qt4.ext
+Description="Envio de mensajes por telegram a una lista de personas elegidas"
+Authors="Julio Sanchez Berro (jsbsan)"
+TabSize=2
+Translate=1
+Language=en_US
+Maintainer=Julio Sanchez Berro
+Address=jusabejusabe@gmail.com
+Url=http://jsbsan.blogspot.com.es
+License=General Public License
+PackageName=telegramcartero-0.0.3
+CreateEachDirectory=1
+Packager=1
+Systems=debian
+Menus=debian:"Applications/Network/Communication"
+Categories=debian:"Network"
+Groups=debian:"admin"

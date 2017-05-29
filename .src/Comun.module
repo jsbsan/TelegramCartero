@@ -1,0 +1,30 @@
+' Gambas module file
+
+Public Function Between(Datos As String, Cadena1 As String, Cadena2 As String) As String
+
+  Dim iinf As Integer
+  Dim isup As Integer
+
+  iinf = String.InStr(Datos, Cadena1) + String.Len(Cadena1)
+  isup = String.InStr(Datos, Cadena2, iinf)
+  Return String.Mid(Datos, iinf, isup - iinf)
+
+End
+
+''Funcion compartida por Shordi:
+'' https://www.gambas-es.org/viewtopic.php?f=1&t=6401
+Public Function decolorar(texto As String) As String 'devuelve un listado con información detallada del sistema
+
+  Dim nombretemporal As String 'nombre del fichero temporal, para escribir el texto en colores
+  Dim slistado As String
+  'Este de abajo es el que yo tengo hecho para almacenar en una base de datos ese comando
+  '      Shell "inxi -Fox |sed -r \"s/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g\" " To slistado
+  'adaptándolo a tu fichero (y al path donde lo tengas, claro):
+
+  nombretemporal = "/tmp/textodecolorado.txt"
+  File.Save(nombretemporal, texto)
+
+  Shell "cat " & nombretemporal & " |sed -r \"s/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g\" " To slistado
+  Return slistado
+
+End

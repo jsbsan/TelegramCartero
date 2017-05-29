@@ -1,0 +1,300 @@
+' Gambas class file
+
+'
+' TelegramCartero
+' Envio de mensajes por telegram a una lista de personas elegidas
+'
+' Copyright (C) Julio Sanchez Berro (jsbsan)
+'
+' This program is free software; you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation; either version 2 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program; if not, write to the Free Software
+' Foundation, Inc., 51 Franklin St, Fifth Floor,
+' Boston, MA  02110-1301  USA
+'
+
+Public ruta As String 'ruta del programa telegram-cli
+
+Public banderaFinContactos As Boolean = False
+
+Public Content As String
+
+Public EscribirEnPrograma As Stream
+
+Public Sub Form_Open()
+
+  tituloVentanaPrincipal()
+  Labelversion.text = Application.Version
+  If Not buscarProgramaTelegram() Then
+    Message.Info(("No es posible encontrar el ejecutable: telegram-cli\nEl programa no funcionara... :("))
+    Me.Close()
+  Endif
+
+  'define gridviews
+  definirGridviewDatos()
+  'listado de contactos
+  listaContactos()
+
+End
+
+Public Function buscarProgramaTelegram() As Boolean
+
+  Dim salida As String
+  Dim lineas As String[]
+  Dim ltmp As String
+  Dim bandera As Boolean
+
+  Shell "find " & User.Home & "/ -name \"telegram-cli\"" To salida
+
+  lineas = Split(salida, "\n")
+
+  bandera = False
+  For Each ltmp In lineas
+    If InStr(ltmp, "tg/bin/") <> 0 And InStr(ltmp, "telegram-cli") <> 0 Then
+      'contiene ruta de ejecutable telegram.cli
+      Settings["rutaTelegramCli"] = ltmp
+      ruta = ltmp
+      bandera = True
+      Break
+    Endif
+
+  Next
+
+  Return bandera
+
+End
+
+Public Sub definirGridviewDatos()
+
+  With GridViewContactos
+    .Header = 3
+    .Rows.count = 0
+    .Columns.count = 1
+    .Columns[0].title = ("Nombre")
+  End With
+
+End
+
+Public Function listaContactos() As String[]
+
+  Dim a As Integer
+  Dim comando As String
+  Dim salida As String
+  Dim lineas As String[]
+  Dim ltmp As String
+  Dim contacto As String
+  Dim contenido As String
+
+  Exec [ruta, "-W", "-e", "contact_list"] To salida
+
+  Print salida
+
+  contenido = salida
+
+  ' contenido = Comun.Between(contenido, "I: config dir", "All done. ")
+
+  contenido = Comun.decolorar(contenido)
+
+  lineas = Split(contenido, "\n")
+
+  'limpio lineas iniciales
+  For a = 0 To lineas.Max
+    If InStr(lineas[a], "I: config dir=") <> 0 Then
+      lineas.Remove(0, a + 1)
+      Break
+    Endif
+  Next
+  'quito las 3 ultimas lineas "All done. Exit, halt, y espacios"
+  lineas.Remove(lineas.max - 2, 3)
+
+  'buscar prompt "> "
+  For a = 0 To lineas.Max
+    If Mid$(lineas[a], 1, 2) = "> " Then
+      ' he encontrado el prompt...
+      If a = 0 Then Break
+      lineas.Remove(0, a)
+      Break
+    Endif
+  Next
+
+  'el resto de lineas contiene datos de contactos...
+
+  For Each ltmp In lineas
+    ltmp = Replace(ltmp, "\r>", "")
+    ltmp = Replace(ltmp, "\r", "")
+
+    ltmp = Replace(ltmp, "> ", "")
+    ltmp = RTrim(ltmp)
+    ltmp = LTrim(ltmp)
+    Print ltmp; " -> ";
+    contacto = ltmp
+    Print contacto
+
+    If InStr(contacto, ":") <> 0 And InStr(contacto, "[") <> 0 And InStr(contacto, "]") <> 0 Then
+      'por si es un mensaje de chat...
+      Continue
+    Endif
+
+    If contacto <> "" And Len(contacto) < 20 Then
+
+      GridViewContactos.Rows.count += 1
+      GridViewContactos[GridViewContactos.rows.max, 0].text = contacto
+
+    Endif
+
+  Next
+
+End
+
+Public Sub agregalistbox(contacto As String)
+  'El siguiente codigo añade un contacto a la lista de envio, solo si no esta ya incluido.
+
+  If ListBoxContactosEnvio.list.Find(contacto) = -1 Then
+
+    ListBoxContactosEnvio.Add(contacto)
+    ListBoxContactosEnvio.Refresh()
+  Else
+
+    Message.Info(("Conctacto ya añadido:") & " " & contacto)
+
+  Endif
+
+End
+
+Public Sub ButtonAgregar_Click()
+
+  Dim a As Integer
+
+  For a = 0 To GridViewContactos.Rows.Selection.Max
+
+    agregaListbox(GridViewContactos[GridViewContactos.Rows.Selection[a], 0].text)
+
+  Next
+
+End
+
+Public Sub ButtonQuitar_Click()
+
+  Dim a As Integer
+
+  If ListBoxContactosEnvio.index <> -1 Then
+
+    Print ListBoxContactosEnvio.index
+
+    ListBoxContactosEnvio.Remove(ListBoxContactosEnvio.index)
+
+  Endif
+
+End
+
+Public Sub GridViewContactos_DblClick()
+
+  'veo si esta elegido alguna fila, si es asi, la paso al listabox
+  If GridViewContactos.row = -1 Then
+    Message.Info(("Debe seleccionar un contacto"))
+    Return
+  Endif
+
+  agregaListbox(GridViewContactos[GridViewContactos.row, 0].text)
+
+End
+
+Public Sub ButtonEnviar_Click()
+
+  Dim comando As String
+  Dim salida As String
+
+  Dim a As Integer
+  'enviar mensaje a varias contactos
+
+  If ListBoxContactosEnvio.List.count = 0 Then
+
+    Message.Info(("No hay ningun contacto a enviar mensaje"))
+    Return
+
+  Endif
+
+  If ListBoxContactosEnvio.list.count = 1 Then
+
+    ' comando = ruta & " " & "-k tg-server.pub msg " & Replace(ListBoxContactosEnvio.List[0], " ", "_") & " \"" & TextAreaMensaje.text & "\""
+    ' Shell comando
+    EscribirEnPrograma = Exec [ruta, "-k", "tg-server.pub"] For Write
+
+    escribe(ListBoxContactosEnvio.List[0], TextAreaMensaje.text)
+
+    Message.Info(("mensaje enviado"))
+    EscribirEnPrograma.Close
+
+    Return
+  Endif
+
+  'Hay mas de un contacto a que enviar:
+  escribeInformacionDelEnvio(0)
+
+  Inc Application.Busy
+  ButtonEnviar.Enabled = False
+  'escribo el primer mensaje...
+  EscribirEnPrograma = Exec [ruta, "-k", "tg-server.pub"] For Write
+
+  escribe(ListBoxContactosEnvio.List[0], TextAreaMensaje.text)
+
+  For a = 1 To ListBoxContactosEnvio.List.Count - 1
+    Wait 10 'para que no me considere spamm
+    EscribirEnPrograma = Exec [ruta, "-k", "tg-server.pub"] For Write
+
+    escribe(ListBoxContactosEnvio.List[0], TextAreaMensaje.text)
+
+    escribeInformacionDelEnvio(a)
+    Me.Title = ("enviando...") & Str$(a + 1) & " " & ("de") & " " & Str$(ListBoxContactosEnvio.List.Count)
+    ButtonEnviar.Text = ("enviando...") & Str$(a + 1) & " " & ("de") & " " & Str$(ListBoxContactosEnvio.List.Count)
+
+  Next
+
+  ButtonEnviar.Enabled = True
+  ButtonEnviar.Text = ("Enviar")
+  tituloVentanaPrincipal()
+
+  Dec Application.Busy
+  'cerrar y matar el proceso
+  EscribirEnPrograma.Close
+
+  Message.Info(("Mensajes enviados"))
+
+End
+
+Public Sub EscribeInformacionDelEnvio(a As Integer)
+  'Modifica titulo del formulario
+
+  Me.Title = ("enviando...") & Str$(a + 1) & " " & ("de") & " " & Str$(ListBoxContactosEnvio.List.Count)
+  'Modifica titulo del boton
+  ButtonEnviar.Text = ("enviando...") & Str$(a + 1) & " " & ("de") & " " & Str$(ListBoxContactosEnvio.List.Count)
+  ButtonEnviar.refresh()
+
+End
+
+Public Sub escribe(contacto As String, mensaje As String)
+  'escribir linea de contacto si funciona y lo tengo que hace para que reconozca a los que tengoque enviar el mensaje !!!!
+
+  Write #EscribirEnPrograma, "contact_list" & GB.Lf
+  Wait 1
+  'eliminar del mensaje los retornos de carro...lo sustituyo por un punto
+  mensaje = Replace(mensaje, gb.lf, ".")
+  Wait 1
+  Write #EscribirEnPrograma, "msg " & Replace(Replace(contacto, " ", "_"), " ", "") & " \"" & mensaje & "\"" & GB.Lf
+
+End
+
+Public Sub tituloVentanaPrincipal()
+
+  Me.Title = ("Cartero Telegram")
+
+End
