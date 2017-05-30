@@ -143,7 +143,7 @@ Public Sub ButtonEnviar_Click()
     Wait 10 'para que no me considere spamm
     EscribirEnPrograma = Exec [Telegram.ruta, "-k", "tg-server.pub"] For Write
 
-    escribe(ListBoxContactosEnvio.List[0], TextAreaMensaje.text)
+    escribe(ListBoxContactosEnvio.List[a], TextAreaMensaje.text)
 
     escribeInformacionDelEnvio(a)
     Me.Title = ("enviando...") & Str$(a + 1) & " " & ("de") & " " & Str$(ListBoxContactosEnvio.List.Count)
@@ -194,6 +194,8 @@ End
 Public Sub PictureBox1_MouseDown()
 
   FormGrupos.ShowModal()
+  CargoGrupoCombobox()
+  ComboBoxGrupos_Click()
 
 End
 
@@ -242,9 +244,12 @@ Public Sub recargarGridUsuarios(cadena As String[])
   Dim usu As String
 
   GridViewContactos.Rows.count = 0 'vacio el contenido del gridview
-  For Each usu In cadena
-    GridViewContactos.Rows.count += 1
-    GridViewContactos[GridViewContactos.rows.max, 0].text = usu
-  Next
+
+  If Not IsNull(cadena) Then
+    For Each usu In cadena
+      GridViewContactos.Rows.count += 1
+      GridViewContactos[GridViewContactos.rows.max, 0].text = usu
+    Next
+  Endif
 
 End

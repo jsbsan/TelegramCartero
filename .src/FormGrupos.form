@@ -68,7 +68,7 @@
       Expand = True
       Mode = Select.Single
     }
-    { HBox1 HBox
+    { HBoxCrearBorrarContactosTelegram HBox
       MoveScaled(1,53,27,6)
       { ButtonCrearContacto Button
         MoveScaled(1,0,11,6)

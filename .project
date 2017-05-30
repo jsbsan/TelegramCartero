@@ -1,7 +1,7 @@
 # Gambas Project File 3.0
 # Compiled with Gambas 3.9.2
 Title=TelegramCartero
-Startup=FormGrupos
+Startup=FMain
 Icon=icono-email.png
 Version=0.0.4
 Component=gb.image

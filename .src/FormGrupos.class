@@ -19,6 +19,8 @@ Public Sub Form_Open()
   'actualizo listado...
   asignaletreroContactos(GrupoActual)
 
+  HBoxCrearBorrarContactosTelegram.Visible = False ''TODO: Hacer el tema de agragar un contacto y borrar contacto en telegram-cli
+
 End
 
 Public Sub actualizaListaGrupo()

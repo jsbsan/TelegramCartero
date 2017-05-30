@@ -1,6 +1,3 @@
-[Bookmarks]
-FMain=[]
-
 [Breakpoints]
 Count=0
 
@@ -20,22 +17,19 @@ Geometry=[528,354,224,280]
 Path="/home/mint/TelegramCartero.gambas"
 
 [OpenFile]
-Active=8
+Active=4
 File[1]=".src/FMain.form"
 File[2]="go-previous-5.png"
 File[3]="icono-email.png"
-File[4]=".src/FMain.class:22.45"
+File[4]=".src/FMain.class:0.198"
 File[5]=".src/Comun.module:0.33"
 File[6]="ListaContactos.sh:5.0"
-Count=14
+Count=11
 File[7]=".src/FormGrupos.form"
-File[8]=".src/FormGrupos.class:33.190"
+File[8]=".src/FormGrupos.class:23.8"
 File[9]=".src/Telegram.module:0.99"
 File[10]=".src/FormNuevoContacto.form"
 File[11]=".src/FormNuevoContacto.class:0.2"
-File[12]=".src/json/JSON354.module:2.276"
-File[13]=".src/json/JS354.class:0.0"
-File[14]=".src/json/JSONCollection354.class:0.0"
 
 [Watches]
 Count=0
