@@ -17,11 +17,11 @@ Geometry=[528,354,224,280]
 Path="/home/mint/TelegramCartero.gambas"
 
 [OpenFile]
-Active=7
+Active=1
 File[1]=".src/FMain.form"
 File[2]="go-previous-5.png"
 File[3]="icono-email.png"
-File[4]=".src/FMain.class:2.36"
+File[4]=".src/FMain.class:43.259"
 File[5]=".src/Comun.module:0.33"
 File[6]="ListaContactos.sh:5.0"
 Count=11

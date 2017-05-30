@@ -1,0 +1,167 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: TelegramCartero 3.9.2\n"
+"PO-Revision-Date: 2017-05-30 19:35 UTC\n"
+"Last-Translator: mint <mint@mint-OptiPlex-740>\n"
+"Language: qcv_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .project:1
+msgid "TelegramCartero"
+msgstr "TelegramCartero"
+
+#: .project:2
+msgid "Envio de mensajes por telegram a una lista de personas elegidas"
+msgstr "Envie de mensages per TELEGRAM a una llista de persones elegides"
+
+#: Comun.module:39
+msgid "Nombre"
+msgstr "Nom"
+
+#: FMain.class:37 Telegram.module:52
+msgid "No es posible encontrar el ejecutable: telegram-cli\nEl programa no funcionara... :("
+msgstr "No es possible trobar l'eixecutable: TELEGRAM-CLI \nEl programa no funcionara... :("
+
+#: FMain.class:60
+msgid "Conctacto ya añadido:"
+msgstr "Contacte ya afegit:"
+
+#: FMain.class:96 FormGrupos.class:98
+msgid "Debe seleccionar un contacto"
+msgstr "Deu seleccionar un contacte"
+
+#: FMain.class:114
+msgid "No hay ningun contacto a enviar mensaje"
+msgstr "No hi ha ningun contacte a enviar mensage"
+
+#: FMain.class:127
+msgid "mensaje enviado"
+msgstr "mensage enviat"
+
+#: FMain.class:150
+msgid "de"
+msgstr "de"
+
+#: FMain.class:150
+msgid "enviando..."
+msgstr "enviant..."
+
+#: FMain.class:163
+msgid "Mensajes enviados"
+msgstr "mensages enviats"
+
+#: FMain.class:191
+msgid "Cartero Telegram"
+msgstr "Carter Telegram"
+
+#: FMain.form:28
+msgid "MENSAJE"
+msgstr "MENSAJE"
+
+#: FMain.form:37
+msgid "Enviar"
+msgstr "Enviar"
+
+#: FMain.form:45
+msgid "Enviar a."
+msgstr "Enviar a."
+
+#: FMain.form:54
+msgid "añadir"
+msgstr "afegir"
+
+#: FMain.form:60
+msgid "quitar"
+msgstr "llevar"
+
+#: FMain.form:67 FormGrupos.form:83
+msgid "Lista de Contactos"
+msgstr "Llista de contactes"
+
+#: FMain.form:83
+msgid "Realizado por Julio Sánchez Berro (jsbsan). SoftwareLibre.  Vesión:"
+msgstr "Realisat per Julio Sánchez Berro, Softwarelibre. Versio:"
+
+#: FMain.form:93
+msgid "Gestión Grupos Y Contactos"
+msgstr "Gestio Grups i Contactes"
+
+#: FMain.form:101
+msgid "GRUPOS"
+msgstr "GRUPS"
+
+#: FMain.form:109
+msgid "Patrocinado por <u>CC San Pedro Apóstol</u>"
+msgstr "Patrocinat per  <u>Col·legi San Pedro Apóstol</u>"
+
+#: FormGrupos.class:138
+msgid "Contactos del Grupo"
+msgstr "Contactes del Grup"
+
+#: FormGrupos.form:32
+msgid "Grupos"
+msgstr "Grups"
+
+#: FormGrupos.form:45
+msgid "Crear"
+msgstr "Crear"
+
+#: FormGrupos.form:52
+msgid "Borrar"
+msgstr "Borrar"
+
+#: FormGrupos.form:61
+msgid "Contactos Del grupo"
+msgstr "Contactes Del Grup"
+
+#: FormGrupos.form:74
+msgid "Borrar Contacto de lista"
+msgstr "Borrar Contacte de llista"
+
+#: FormGrupos.form:90
+msgid "Filtrar:"
+msgstr "filtrar:"
+
+#: FormGrupos.form:102
+msgid "Haz click sobre un contacto para añadirlo al grupo"
+msgstr "Fe CLICK sobre un contacte per a afegir-ho al grup"
+
+#: FormGrupos.form:129
+msgid "Recarga los contactos del Usuario Telegram"
+msgstr "Recarrega els contactes de l'Usuari Telegram"
+
+#: FormGrupos.form:130
+msgid "Recargar"
+msgstr "Recarregar"
+
+#: FormGrupos.form:136
+msgid "Salir del Formulario"
+msgstr "Eixir del formulari"
+
+#: FormNuevoContacto.form:20
+msgid "Móvil:"
+msgstr "Movil:"
+
+#: FormNuevoContacto.form:31
+msgid "Nota:<br>\nIncluir los dos digitos del pais (para España es 34) y luego los 9 números del móvil."
+msgstr "Nota:<br>\nIncloure els dos digtios del pais (per a Espanya es 34) i despres els 9 numeros del movil."
+
+#: FormNuevoContacto.form:36
+msgid "Nombre:"
+msgstr "Nom:"
+
+#: FormNuevoContacto.form:42
+msgid "Apellido:"
+msgstr "Llinage:"
+
+#: FormNuevoContacto.form:52
+msgid "Aceptar"
+msgstr "Acceptar"
+
+#: FormNuevoContacto.form:58
+msgid "Cancelar"
+msgstr "Cancelar"
+

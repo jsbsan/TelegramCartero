@@ -2,11 +2,13 @@ FMain
 TelegramCartero
 0
 0
-0.0.4
+0.0.5
 
 gb.image
 gb.qt4
 gb.form
+gb.desktop.x11
+gb.desktop
 gb.settings
 gb.qt4.ext
 

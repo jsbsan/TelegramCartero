@@ -254,3 +254,15 @@ Public Sub recargarGridUsuarios(cadena As String[])
   Endif
 
 End
+
+Public Sub Label1_MouseDown()
+
+  Desktop.Open("http://sanpedroapostol.org/")
+
+End
+
+Public Sub LabelGrupo_MouseDown()
+
+  PictureBox1_MouseDown()
+
+End

@@ -5,7 +5,7 @@
   Icon = Picture["icono-email.png"]
   Resizable = False
   { Frame1 Frame
-    MoveScaled(42,43,55,19)
+    MoveScaled(42,50,55,19)
     Arrangement = Arrange.Vertical
     Text = ("MENSAJE")
     { TextAreaMensaje TextArea
@@ -19,7 +19,7 @@
     }
   }
   { Frame2 Frame
-    MoveScaled(53,4,44,39)
+    MoveScaled(53,11,44,39)
     Arrangement = Arrange.Fill
     Text = ("Enviar a.") & "..."
     { ListBoxContactosEnvio ListBox
@@ -27,17 +27,17 @@
     }
   }
   { ButtonAgregar Button
-    MoveScaled(43,11,7,5)
+    MoveScaled(43,13,7,5)
     ToolTip = ("añadir")
     Picture = Picture["der.png"]
   }
   { ButtonQuitar Button
-    MoveScaled(43,20,7,5)
+    MoveScaled(43,22,7,5)
     ToolTip = ("quitar")
     Picture = Picture["izq.png"]
   }
   { Frame3 Frame
-    MoveScaled(1,4,39,58)
+    MoveScaled(1,11,39,58)
     Arrangement = Arrange.Vertical
     Text = ("Lista de Contactos")
     { ComboBoxGrupos ComboBox
@@ -51,16 +51,32 @@
     }
   }
   { TextLabel1 TextLabel
-    MoveScaled(9,63,61,5)
-    Text = ("Realizado por Julio Sanchez Berro (jsbsan). SofwtareLibre.  Vesión:")
+    MoveScaled(11,7,61,3)
+    Text = ("Realizado por Julio Sánchez Berro (jsbsan). SoftwareLibre.  Vesión:")
     Alignment = Align.Right
   }
   { Labelversion Label
-    MoveScaled(73,63,5,5)
+    MoveScaled(74,6,5,5)
   }
   { PictureBox1 PictureBox
-    MoveScaled(42,31,9,9)
+    MoveScaled(42,33,9,9)
     ToolTip = ("Gestión Grupos Y Contactos")
     Picture = Picture["icono_grupos63x63.png"]
+  }
+  { LabelGrupo Label
+    MoveScaled(42,38,9,4)
+    Font = Font["Mukti Narrow,Bold,+1"]
+    Foreground = &HFFFFFF&
+    Text = ("GRUPOS")
+    Alignment = Align.Center
+  }
+  { Label1 TextLabel
+    MoveScaled(10,1,76,4)
+    Font = Font["Bold,+3"]
+    Foreground = &H007FFF&
+    ToolTip = ("http://sanpedroapostol.org/")
+    Text = ("Patrocinado por <u>CC San Pedro Apóstol</u>")
+    Alignment = Align.Center
+    Border = Border.Sunken
   }
 }
