@@ -22,8 +22,6 @@
 ' Boston, MA  02110-1301  USA
 '
 
-Public ruta As String 'ruta del programa telegram-cli
-
 Public banderaFinContactos As Boolean = False
 
 Public Content As String
@@ -34,124 +32,18 @@ Public Sub Form_Open()
 
   tituloVentanaPrincipal()
   Labelversion.text = Application.Version
-  If Not buscarProgramaTelegram() Then
+  If Not Telegram.buscarProgramaTelegram() Then
     Message.Info(("No es posible encontrar el ejecutable: telegram-cli\nEl programa no funcionara... :("))
     Me.Close()
   Endif
 
   'define gridviews
-  definirGridviewDatos()
+  Comun.definirGridviewDatos(GridViewContactos)
   'listado de contactos
-  listaContactos()
+  'Telegram.listaContactos(GridViewContactos)-> cargaba lo usuarios de contact_list
 
-End
-
-Public Function buscarProgramaTelegram() As Boolean
-
-  Dim salida As String
-  Dim lineas As String[]
-  Dim ltmp As String
-  Dim bandera As Boolean
-
-  Shell "find " & User.Home & "/ -name \"telegram-cli\"" To salida
-
-  lineas = Split(salida, "\n")
-
-  bandera = False
-  For Each ltmp In lineas
-    If InStr(ltmp, "tg/bin/") <> 0 And InStr(ltmp, "telegram-cli") <> 0 Then
-      'contiene ruta de ejecutable telegram.cli
-      Settings["rutaTelegramCli"] = ltmp
-      ruta = ltmp
-      bandera = True
-      Break
-    Endif
-
-  Next
-
-  Return bandera
-
-End
-
-Public Sub definirGridviewDatos()
-
-  With GridViewContactos
-    .Header = 3
-    .Rows.count = 0
-    .Columns.count = 1
-    .Columns[0].title = ("Nombre")
-  End With
-
-End
-
-Public Function listaContactos() As String[]
-
-  Dim a As Integer
-  Dim comando As String
-  Dim salida As String
-  Dim lineas As String[]
-  Dim ltmp As String
-  Dim contacto As String
-  Dim contenido As String
-
-  Exec [ruta, "-W", "-e", "contact_list"] To salida
-
-  Print salida
-
-  contenido = salida
-
-  ' contenido = Comun.Between(contenido, "I: config dir", "All done. ")
-
-  contenido = Comun.decolorar(contenido)
-
-  lineas = Split(contenido, "\n")
-
-  'limpio lineas iniciales
-  For a = 0 To lineas.Max
-    If InStr(lineas[a], "I: config dir=") <> 0 Then
-      lineas.Remove(0, a + 1)
-      Break
-    Endif
-  Next
-  'quito las 3 ultimas lineas "All done. Exit, halt, y espacios"
-  lineas.Remove(lineas.max - 2, 3)
-
-  'buscar prompt "> "
-  For a = 0 To lineas.Max
-    If Mid$(lineas[a], 1, 2) = "> " Then
-      ' he encontrado el prompt...
-      If a = 0 Then Break
-      lineas.Remove(0, a)
-      Break
-    Endif
-  Next
-
-  'el resto de lineas contiene datos de contactos...
-
-  For Each ltmp In lineas
-    ltmp = Replace(ltmp, "\r>", "")
-    ltmp = Replace(ltmp, "\r", "")
-
-    ltmp = Replace(ltmp, "> ", "")
-    ltmp = RTrim(ltmp)
-    ltmp = LTrim(ltmp)
-    Print ltmp; " -> ";
-    contacto = ltmp
-    Print contacto
-
-    If InStr(contacto, ":") <> 0 And InStr(contacto, "[") <> 0 And InStr(contacto, "]") <> 0 Then
-      'por si es un mensaje de chat...
-      Continue
-    Endif
-
-    If contacto <> "" And Len(contacto) < 20 Then
-
-      GridViewContactos.Rows.count += 1
-      GridViewContactos[GridViewContactos.rows.max, 0].text = contacto
-
-    Endif
-
-  Next
+  CargoGrupoCombobox()
+  ComboBoxGrupos_Click()
 
 End
 
@@ -227,7 +119,7 @@ Public Sub ButtonEnviar_Click()
 
     ' comando = ruta & " " & "-k tg-server.pub msg " & Replace(ListBoxContactosEnvio.List[0], " ", "_") & " \"" & TextAreaMensaje.text & "\""
     ' Shell comando
-    EscribirEnPrograma = Exec [ruta, "-k", "tg-server.pub"] For Write
+    EscribirEnPrograma = Exec [Telegram.ruta, "-k", "tg-server.pub"] For Write
 
     escribe(ListBoxContactosEnvio.List[0], TextAreaMensaje.text)
 
@@ -243,13 +135,13 @@ Public Sub ButtonEnviar_Click()
   Inc Application.Busy
   ButtonEnviar.Enabled = False
   'escribo el primer mensaje...
-  EscribirEnPrograma = Exec [ruta, "-k", "tg-server.pub"] For Write
+  EscribirEnPrograma = Exec [Telegram.ruta, "-k", "tg-server.pub"] For Write
 
   escribe(ListBoxContactosEnvio.List[0], TextAreaMensaje.text)
 
   For a = 1 To ListBoxContactosEnvio.List.Count - 1
     Wait 10 'para que no me considere spamm
-    EscribirEnPrograma = Exec [ruta, "-k", "tg-server.pub"] For Write
+    EscribirEnPrograma = Exec [Telegram.ruta, "-k", "tg-server.pub"] For Write
 
     escribe(ListBoxContactosEnvio.List[0], TextAreaMensaje.text)
 
@@ -296,5 +188,63 @@ End
 Public Sub tituloVentanaPrincipal()
 
   Me.Title = ("Cartero Telegram")
+
+End
+
+Public Sub PictureBox1_MouseDown()
+
+  FormGrupos.ShowModal()
+
+End
+
+'--------------------------------------
+'cargar datos de grupos y contactos...
+'--------------------------------------
+Public listaGrupos As String[]
+Public GrupoActual As String
+Public contenido As New Collection
+
+Public Sub CargoGrupoCombobox() 'cargo el listado de grupos y creo la variable contenido que continee grupo y su usuarios
+
+  Dim g As String 'grupo temporal
+  Dim usu As String[] 'lista de usuarios que pertenecen a un grupo
+
+  listaGrupos = Settings["ListaGrupos", ["General"]]
+
+  GrupoActual = "General"
+
+  contenido = New Collection
+
+  ComboBoxGrupos.Clear()
+
+  For Each g In listaGrupos
+    ComboBoxGrupos.Add(g) 'añade contacto
+    usu = Settings[g] 'lee de la configuracion los usuarios
+    If Not IsNull(usu) Then
+      contenido.Add(usu, g) 'los cargo en memoria...
+    Endif
+  Next
+
+End
+
+Public Sub ComboBoxGrupos_Click()
+
+  Print "  cambio de elegido..", ComboBoxGrupos.text
+
+  'recargo los datos de usuarios del grupo elegido..
+
+  recargarGridUsuarios(contenido[ComboBoxGrupos.text])
+
+End
+
+Public Sub recargarGridUsuarios(cadena As String[])
+
+  Dim usu As String
+
+  GridViewContactos.Rows.count = 0 'vacio el contenido del gridview
+  For Each usu In cadena
+    GridViewContactos.Rows.count += 1
+    GridViewContactos[GridViewContactos.rows.max, 0].text = usu
+  Next
 
 End

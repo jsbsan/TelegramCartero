@@ -1,0 +1,112 @@
+' Gambas module file
+
+Public ruta As String ''ruta donde se encuentra el programa telegram-cli
+
+'Detecta donde esta el programa Telegram-Cli
+Public Function buscarProgramaTelegram() As Boolean
+
+  Dim salida As String
+  Dim lineas As String[]
+  Dim ltmp As String
+  Dim bandera As Boolean
+
+  Shell "find " & User.Home & "/ -name \"telegram-cli\"" To salida
+
+  lineas = Split(salida, "\n")
+
+  bandera = False
+  For Each ltmp In lineas
+    If InStr(ltmp, "tg/bin/") <> 0 And InStr(ltmp, "telegram-cli") <> 0 Then
+      'contiene ruta de ejecutable telegram.cli
+      Settings["rutaTelegramCli"] = ltmp
+      ruta = ltmp
+      bandera = True
+      Break
+    Endif
+
+  Next
+
+  Return bandera
+
+End
+
+'Carga la lista de contactos en el gridview
+Public Function listaContactos(grid As GridView) As String[]
+
+  Dim a As Integer
+  Dim comando As String
+  Dim salida As String
+  Dim lineas As String[]
+  Dim ltmp As String
+  Dim contacto As String
+  Dim contenido As String
+  Dim ContactosAlmacenados As New String[]
+
+  If Not Telegram.buscarProgramaTelegram() Then
+    Message.Info(("No es posible encontrar el ejecutable: telegram-cli\nEl programa no funcionara... :("))
+    Me.Close()
+  Endif
+
+  Exec [Telegram.ruta, "-W", "-e", "contact_list"] To salida
+
+  contenido = salida
+
+  ' contenido = Comun.Between(contenido, "I: config dir", "All done. ")
+
+  contenido = Comun.decolorar(contenido)
+
+  lineas = Split(contenido, "\n")
+
+  'limpio lineas iniciales
+  For a = 0 To lineas.Max
+    If InStr(lineas[a], "I: config dir=") <> 0 Then
+      lineas.Remove(0, a + 1)
+      Break
+    Endif
+  Next
+  'quito las 3 ultimas lineas "All done. Exit, halt, y espacios"
+  lineas.Remove(lineas.max - 2, 3)
+
+  'buscar prompt "> "
+  For a = 0 To lineas.Max
+    If Mid$(lineas[a], 1, 2) = "> " Then
+      ' he encontrado el prompt...
+      If a = 0 Then Break
+      lineas.Remove(0, a)
+      Break
+    Endif
+  Next
+
+  Grid.Rows.count = 0 'vacio el contenido del gridview
+  ContactosAlmacenados.Clear()
+
+  'el resto de lineas contiene datos de contactos...
+
+  For Each ltmp In lineas
+    ltmp = Replace(ltmp, "\r>", "")
+    ltmp = Replace(ltmp, "\r", "")
+
+    ltmp = Replace(ltmp, "> ", "")
+    ltmp = RTrim(ltmp)
+    ltmp = LTrim(ltmp)
+    Print ltmp; " -> ";
+    contacto = ltmp
+    Print contacto
+
+    If InStr(contacto, ":") <> 0 And InStr(contacto, "[") <> 0 And InStr(contacto, "]") <> 0 Then
+      'por si es un mensaje de chat...
+      Continue
+    Endif
+
+    If contacto <> "" And Len(contacto) < 20 Then
+
+      Grid.Rows.count += 1
+      Grid[Grid.rows.max, 0].text = contacto
+      ContactosAlmacenados.Add(contacto)
+    Endif
+
+  Next
+
+  grid.tag = ContactosAlmacenados
+
+End

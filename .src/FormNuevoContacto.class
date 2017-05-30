@@ -1,0 +1,7 @@
+' Gambas class file
+
+Public Sub ButtonCancelar_Click()
+
+  Me.Close()
+
+End

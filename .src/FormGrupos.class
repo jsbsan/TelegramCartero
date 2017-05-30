@@ -1,0 +1,232 @@
+' Gambas class file
+
+Public listaGrupos As String[]
+Public contenido As New Collection
+Public GrupoActual As String
+
+Public Sub Form_Open()
+
+  Me.Title = ("Grupos")
+  Me.Center()
+  'define gridviews
+  Comun.definirGridviewDatos(GridViewContactos)
+
+  'leer del fichero de datos/configuracion los grupos y contactos...
+
+  listaGrupos = Settings["ListaGrupos", ["General"]]
+  GrupoActual = "General"
+  actualizaListaGrupo()
+  'actualizo listado...
+  asignaletreroContactos(GrupoActual)
+
+End
+
+Public Sub actualizaListaGrupo()
+
+  Dim g As String 'grupo temporal
+  Dim usu As String[] 'lista de usuarios que pertenecen a un grupo
+
+  contenido = New Collection
+
+  ListBoxGrupos.Clear()
+
+  For Each g In listaGrupos
+    ListBoxGrupos.Add(g)
+    usu = Settings[g] 'lee de la configuracion los usuarios
+    If Not IsNull(usu) Then
+      contenido.Add(usu, g) 'los cargo en memoria...
+    Endif
+  Next
+
+End
+
+Public Sub ButtonSalir_Click()
+
+  Me.Close()
+
+End
+
+Public Sub form_Close()
+  'guardo los datos..
+
+  Settings.Save()
+
+End
+
+Public Sub ButtonRecargarContactos_Click()
+
+  Telegram.listaContactos(GridViewContactos)
+
+End
+
+Public Sub ButtonCrearContacto_Click()
+
+  FormNuevoContacto.Show()
+
+End
+
+Public Sub ButtonCrearGrupo_Click()
+
+  Dim nombre As String
+
+  nombre = InputBox("Nombre del Grupo:", "Nuevo Grupo")
+
+  If nombre = "" Then
+    Return
+  Else
+    'agrego grupo...
+    If IsNull(listaGrupos) Then
+      listaGrupos = New Sring[]
+    Endif
+    listaGrupos.Add(nombre)
+    Settings["ListaGrupos"] = listaGrupos 'guardo nueva lista de grupos
+    Settings[nombre] = [] 'lista de usuarios del nuevo grupo
+    actualizaListaGrupo()
+    asignaletreroContactos(nombre)
+  Endif
+
+End
+
+Public Sub GridViewContactos_DblClick()
+
+  Dim NuevoContacto As String
+  Dim usuarios As String[]
+  Dim listaAntigua As String[]
+  Dim listaNueva As New String[]
+  'veo si esta elegido alguna fila, si es asi, la paso al listabox
+  If GridViewContactos.row = -1 Then
+    Message.Info(("Debe seleccionar un contacto"))
+    Return
+  Endif
+
+  NuevoContacto = GridViewContactos[GridViewContactos.row, 0].text
+
+  listaAntigua = Settings[GrupoActual]
+
+  If IsNull(listaAntigua) Then
+    listanueva.Add(NuevoContacto)
+  Else
+
+    listaAntigua.Add(NuevoContacto)
+    listanueva = listaAntigua
+
+  Endif
+
+  Settings[GrupoActual] = listanueva
+
+  contenido[GrupoActual] = listanueva
+  'actualizo listado...
+  asignaletreroContactos(GrupoActual)
+
+End
+
+Public Sub ListBoxGrupos_Click()
+
+  Dim g As String
+
+  g = ListBoxGrupos.Text
+
+  asignaletreroContactos(g)
+
+End
+
+'----------------------------------
+Public Sub asignaletreroContactos(g As String)
+
+  Dim contacto As String
+
+  FrameContactosGrupo.Text = ("Contactos del Grupo") & ": " & g
+
+  GrupoActual = g
+  FrameContactosGrupo.tag = GrupoActual
+
+  ListBoxContactosGrupo.Clear()
+
+  If Not IsNull(contenido[g]) Then
+
+    For Each contacto In Contenido[g]
+      ListBoxContactosGrupo.Add(contacto)
+    Next
+  Endif
+
+End
+
+Public Sub ButtonBorrarContactoLista_Click()
+
+  'borra de la lsita el elemencto seleccionado
+
+  If ListBoxContactosGrupo.text <> "" Then
+    'borro del listbox
+    contenido[GrupoActual].Remove(contenido[GrupoActual].Find(ListBoxContactosGrupo.text))
+    ListBoxContactosGrupo.Remove(ListBoxContactosGrupo.Find(ListBoxContactosGrupo.text))
+
+    Settings[GrupoActual] = contenido[GrupoActual]
+  Endif
+
+End
+
+Public Sub ButtonBorrarGrupo_Click()
+
+  'borro grupo...
+  If ListBoxGrupos.text <> "" Then
+
+    'borrando usuarios...
+    Settings[GrupoActual] = [] 'lo vacio
+    'borro grupo
+    listaGrupos.Remove(listaGrupos.Find(ListBoxGrupos.text))
+    'borro del listbox
+    ListBoxGrupos.Remove(ListBoxGrupos.Find(ListBoxGrupos.text))
+    'guardos cambios de grupos
+    Settings["ListaGrupos"] = listaGrupos
+
+    ListBoxContactosGrupo.Clear()
+
+    FrameContactosGrupo.Text = ("Contactos del Grupo") & ": "
+  Endif
+
+End
+
+Public Sub TextBoxFiltro_Change()
+
+  If Len(TextBoxFiltro.text) > 0 Then
+    aplicarfiltro(textBoxFiltro.text)
+  Else
+    noaplicarfiltro()
+  Endif
+
+End
+
+Public Sub noaplicarfiltro()
+
+  Dim usu As String
+
+  GridViewContactos.rows.count = 0
+
+  If Not IsNull(GridViewContactos.tag) Then
+
+    For Each usu In GridViewContactos.Tag
+      GridViewContactos.Rows.count += 1
+      GridViewContactos[GridViewContactos.rows.max, 0].text = usu
+
+    Next
+
+  Endif
+
+End
+
+Public Sub aplicarFiltro(filtro As String)
+
+  Dim usu As String
+
+  GridViewContactos.rows.count = 0
+  If Not IsNull(GridViewContactos.tag) Then
+    For Each usu In GridViewContactos.Tag
+      If InStr(Upper(usu), Upper(filtro)) <> 0 Then
+        GridViewContactos.Rows.count += 1
+        GridViewContactos[GridViewContactos.rows.max, 0].text = usu
+      Endif
+
+    Next
+  Endif
+
+End

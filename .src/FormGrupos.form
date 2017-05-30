@@ -1,0 +1,98 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,97,74)
+  Icon = Picture["icono_grupos100x100.png"]
+  Resizable = False
+  { Frame1 Frame
+    MoveScaled(1,5,29,60)
+    Arrangement = Arrange.Vertical
+    Text = ("Grupos")
+    { ListBoxGrupos ListBox
+      MoveScaled(3,13,25,24)
+      Expand = True
+    }
+    { HBox2 HBox
+      MoveScaled(1,52,27,6)
+      { ButtonCrearGrupo Button
+        MoveScaled(0,0,11,6)
+        Expand = True
+        Text = ("Crear")
+        Picture = Picture["icon:/16/new"]
+      }
+      { ButtonBorrarGrupo Button
+        MoveScaled(14,0,11,6)
+        Expand = True
+        Text = ("Borrar")
+        Picture = Picture["icon:/16/delete"]
+      }
+    }
+  }
+  { FrameContactosGrupo Frame
+    MoveScaled(31,5,30,60)
+    Arrangement = Arrange.Vertical
+    Text = ("Contactos Del grupo")
+    { ListBoxContactosGrupo ListBox
+      MoveScaled(4,13,25,24)
+      Expand = True
+    }
+    { HBox3 HBox
+      MoveScaled(1,52,27,6)
+      { ButtonBorrarContactoLista Button
+        MoveScaled(1,0,24,6)
+        Expand = True
+        Text = ("Borrar Contacto de lista")
+        Picture = Picture["icon:/16/delete"]
+      }
+    }
+  }
+  { Frame3 Frame
+    MoveScaled(65,5,30,60)
+    Arrangement = Arrange.Vertical
+    Text = ("Lista de Contactos")
+    { HBoxFiltro HBox
+      MoveScaled(1,4,28,5)
+      { Label1 Label
+        MoveScaled(1,1,11,3)
+        Text = ("Filtrar:")
+        Alignment = Align.Center
+      }
+      { TextBoxFiltro TextBox
+        MoveScaled(13,1,14,3)
+        Expand = True
+      }
+    }
+    { GridViewContactos GridView
+      MoveScaled(4,21,19,29)
+      ToolTip = ("Haz click sobre un contacto para añadirlo al grupo")
+      Expand = True
+      Mode = Select.Single
+    }
+    { HBox1 HBox
+      MoveScaled(1,53,27,6)
+      { ButtonCrearContacto Button
+        MoveScaled(1,0,11,6)
+        Expand = True
+        Text = ("Crear")
+        Picture = Picture["icon:/16/new"]
+      }
+      { ButtonBorrarContacto Button
+        MoveScaled(15,0,11,6)
+        Expand = True
+        Text = ("Borrar")
+        Picture = Picture["icon:/16/delete"]
+      }
+    }
+  }
+  { ButtonRecargarContactos Button
+    MoveScaled(68,1,24,4)
+    ToolTip = ("Recarga los contactos del Usuario Telegram")
+    Text = ("Recargar")
+    Picture = Picture["icon:/16/refresh"]
+  }
+  { ButtonSalir Button
+    MoveScaled(68,67,24,6)
+    Text = ("Salir del Formulario")
+    Picture = Picture["icon:/16/quit"]
+  }
+}

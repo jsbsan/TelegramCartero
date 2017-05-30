@@ -1,0 +1,45 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,64,42)
+  Resizable = False
+  { Label1 Label
+    MoveScaled(11,2,8,4)
+    Text = ("Móvil:")
+    Alignment = Align.Right
+  }
+  { MaskBox1 MaskBox
+    MoveScaled(23,2,19,4)
+    Mask = "99999999999"
+  }
+  { TextLabel1 TextLabel
+    MoveScaled(4,7,57,9)
+    Text = ("Nota:<br>\nIncluir los dos digitos del pais (para España es 34) y luego los 9 números del móvil.")
+  }
+  { Label2 Label
+    MoveScaled(5,18,15,5)
+    Text = ("Nombre:")
+    Alignment = Align.Right
+  }
+  { Label3 Label
+    MoveScaled(5,25,15,5)
+    Text = ("Apellido:")
+    Alignment = Align.Right
+  }
+  { TextBoxNombre TextBox
+    MoveScaled(23,18,18,5)
+  }
+  { ButtonAceptar Button
+    MoveScaled(45,34,13,6)
+    Text = ("Aceptar")
+    Picture = Picture["icon:/16/apply"]
+  }
+  { ButtonCancelar Button
+    MoveScaled(15,34,13,6)
+    Text = ("Cancelar")
+    Picture = Picture["icon:/16/cancel"]
+  }
+  { TextBoxApellido TextBox
+    MoveScaled(23,25,18,5)
+  }
+}

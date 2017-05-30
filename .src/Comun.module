@@ -28,3 +28,15 @@ Public Function decolorar(texto As String) As String 'devuelve un listado con in
   Return slistado
 
 End
+
+''definir gridview de datos Nombre
+Public Sub definirGridviewDatos(grid As GridView)
+
+  With Grid
+    .Header = 3
+    .Rows.count = 0
+    .Columns.count = 1
+    .Columns[0].title = ("Nombre")
+  End With
+
+End
