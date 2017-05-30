@@ -5,3 +5,28 @@ Public Sub ButtonCancelar_Click()
   Me.Close()
 
 End
+
+Public Sub ButtonAceptar_Click()
+
+  escribeNuevoContacto(MaskBoxNumeroMovil.Text, TextBoxNombre.text, TextBoxApellido.text)
+
+  Me.Close()
+
+End
+
+Public Sub escribeNuevoContacto(numero As String, nombre As String, apellido As String)
+  'escribir linea de contacto si funciona y lo tengo que hace para que reconozca a los que tengoque enviar el mensaje !!!!
+
+  Dim EscribirEnPrograma As Stream
+
+  EscribirEnPrograma = Exec [Telegram.ruta, "-k", "tg-server.pub"] For Write
+
+  Wait 0.5
+  Write #EscribirEnPrograma, "contact_list" & GB.Lf
+  Wait 1
+  'escribir datos del contacto...
+  Wait 1
+  Write #EscribirEnPrograma, "add_contact " & Replace(Str$(numero), " ", "") & " " & nombre & " " & apellido & GB.Lf
+  EscribirEnPrograma.Close
+
+End

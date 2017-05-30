@@ -10,21 +10,27 @@ Public Function buscarProgramaTelegram() As Boolean
   Dim ltmp As String
   Dim bandera As Boolean
 
-  Shell "find " & User.Home & "/ -name \"telegram-cli\"" To salida
+  If Settings["rutaTelegramCli", " "] = "" Then
+    'buscar fichero...
+    Shell "find " & User.Home & "/ -name \"telegram-cli\"" To salida
+    lineas = Split(salida, "\n")
+    bandera = False
+    For Each ltmp In lineas
+      If InStr(ltmp, "tg/bin/") <> 0 And InStr(ltmp, "telegram-cli") <> 0 Then
+        'contiene ruta de ejecutable telegram.cli
+        Settings["rutaTelegramCli"] = ltmp
+        ruta = ltmp
+        bandera = True
+        Break
+      Endif
 
-  lineas = Split(salida, "\n")
+    Next
 
-  bandera = False
-  For Each ltmp In lineas
-    If InStr(ltmp, "tg/bin/") <> 0 And InStr(ltmp, "telegram-cli") <> 0 Then
-      'contiene ruta de ejecutable telegram.cli
-      Settings["rutaTelegramCli"] = ltmp
-      ruta = ltmp
-      bandera = True
-      Break
-    Endif
+  Else
 
-  Next
+    ruta = Settings["rutaTelegramCli"] 'cargo la ruta del programa...
+    Return True
+  Endif
 
   Return bandera
 

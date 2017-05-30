@@ -8,7 +8,7 @@
     Text = ("Móvil:")
     Alignment = Align.Right
   }
-  { MaskBox1 MaskBox
+  { MaskBoxNumeroMovil MaskBox
     MoveScaled(23,2,19,4)
     Mask = "99999999999"
   }

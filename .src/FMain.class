@@ -32,6 +32,7 @@ Public Sub Form_Open()
 
   tituloVentanaPrincipal()
   Labelversion.text = Application.Version
+
   If Not Telegram.buscarProgramaTelegram() Then
     Message.Info(("No es posible encontrar el ejecutable: telegram-cli\nEl programa no funcionara... :("))
     Me.Close()
