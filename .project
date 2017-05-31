@@ -3,7 +3,7 @@
 Title=TelegramCartero
 Startup=FMain
 Icon=icono-email.png
-Version=0.0.5
+Version=0.0.6
 Component=gb.image
 Component=gb.qt4
 Component=gb.form
@@ -20,7 +20,7 @@ Maintainer=Julio Sanchez Berro
 Address=jusabejusabe@gmail.com
 Url=http://jsbsan.blogspot.com.es
 License=General Public License
-PackageName=telegramcartero-0.0.5
+PackageName=telegramcartero-0.0.6
 CreateEachDirectory=1
 Packager=1
 Systems=debian

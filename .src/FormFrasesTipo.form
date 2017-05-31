@@ -1,0 +1,42 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,40,60)
+  Arrangement = Arrange.Vertical
+  { ListBoxFrases ListBox
+    MoveScaled(3,5,28,44)
+    Expand = True
+    Sorted = True
+  }
+  { TextAreaEditor TextArea
+    MoveScaled(14,18,23,29)
+    Visible = False
+    Background = &H53595F&
+    Foreground = &H7789BF&
+    Expand = True
+  }
+  { HBox1 HBox
+    MoveScaled(1,53,36,6)
+    { ButtonEditar Button
+      MoveScaled(-2,0,11,6)
+      ToolTip = ("Edita las frases para añadir o cambiarlas")
+      Expand = True
+      Text = ("Editar")
+      Picture = Picture["icon:/16/edit"]
+    }
+    { ButtonAceptar Button
+      MoveScaled(10,0,13,6)
+      ToolTip = ("Añade la frase al mensaje")
+      Expand = True
+      Text = ("Añadir")
+      Picture = Picture["icon:/16/add"]
+    }
+    { ButtonSalir Button
+      MoveScaled(24,0,10,6)
+      ToolTip = ("Salir sin añadir frase")
+      Expand = True
+      Text = ("Salir")
+      Picture = Picture["icon:/16/quit"]
+    }
+  }
+}

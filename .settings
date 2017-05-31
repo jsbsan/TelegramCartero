@@ -17,19 +17,22 @@ Geometry=[528,354,224,280]
 Path="/home/mint/TelegramCartero.gambas"
 
 [OpenFile]
-Active=1
+Active=12
 File[1]=".src/FMain.form"
 File[2]="go-previous-5.png"
 File[3]="icono-email.png"
-File[4]=".src/FMain.class:43.259"
+File[4]=".src/FMain.class:0.270"
 File[5]=".src/Comun.module:0.33"
 File[6]="ListaContactos.sh:5.0"
-Count=11
+Count=14
 File[7]=".src/FormGrupos.form"
 File[8]=".src/FormGrupos.class:0.20"
 File[9]=".src/Telegram.module:15.31"
 File[10]=".src/FormNuevoContacto.form"
 File[11]=".src/FormNuevoContacto.class:32.16"
+File[12]=".src/FormFrasesTipo.form"
+File[13]=".src/FormFrasesTipo.class:32.47"
+File[14]="frasestipo.txt:16.2"
 
 [Watches]
 Count=0

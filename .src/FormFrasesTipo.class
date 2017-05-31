@@ -1,0 +1,57 @@
+' Gambas class file
+
+Private editando As Boolean = False
+Public frasePaso As String[]
+
+Public Sub Form_Open()
+
+  cargafrases()
+
+End
+
+Public Sub cargafrases()
+
+  If Not Exist(User.home & "/.config/frasestipo.txt") Then
+
+    Copy "frasestipo.txt" To User.home & "/.config/frasestipo.txt"
+
+  Endif
+
+  ListBoxFrases.list = Split(File.Load(User.home & "/.config/frasestipo.txt"), "\n")
+
+End
+
+Public Sub ButtonSalir_Click()
+
+  frasePaso.Clear()
+  Me.Close()
+
+End
+
+Public Sub ButtonAceptar_Click()
+
+  frasePaso.Add(ListBoxFrases.text)
+  Me.Close()
+
+End
+
+Public Sub ButtonEditar_Click()
+
+  If editando = False Then
+    editando = True
+    ButtonEditar.Text = ("Guardar")
+    TextAreaEditor.Visible = True
+    ListBoxFrases.Visible = False
+    TextAreaEditor.text = File.load(User.home & "/.config/frasestipo.txt")
+  Else
+    editando = False
+    ButtonEditar.Text = ("Editar")
+    TextAreaEditor.Visible = False
+    ListBoxFrases.Visible = True
+    'guarda cambios
+    File.Save(User.home & "/.config/frasestipo.txt", TextAreaEditor.text)
+    cargafrases()
+
+  Endif
+
+End

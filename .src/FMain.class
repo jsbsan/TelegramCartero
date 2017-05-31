@@ -266,3 +266,17 @@ Public Sub LabelGrupo_MouseDown()
   PictureBox1_MouseDown()
 
 End
+
+Public Sub ButtonFrases_Click()
+
+  Dim frasedato As New String[]
+
+  FormFrasesTipo.frasePaso = frasedato
+  FormFrasesTipo.Showmodal()
+
+  If frasedato.Count = 0 Then
+  Else
+    TextAreaMensaje.text = frasedato[0]
+  Endif
+
+End
